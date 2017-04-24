@@ -4,13 +4,13 @@ MAINTAINER Jean-Francois Chevrette <jfchevrette@gmail.com>
 
 # Labels consumed by the build service
 LABEL Component="mattermost" \
-      Name="mattermost/mattermost-team-3.7.3-centos7" \
-      Version="3.7.3" \
+      Name="mattermost/mattermost-team-3.8.1-centos7" \
+      Version="3.8.1" \
       Release="1"
 
 # Openshift/Kubernetes labels
 LABEL io.k8s.description="Mattermost is an open source, self-hosted Slack-alternative" \
-      io.k8s.display-name="Mattermost 3.7.3" \
+      io.k8s.display-name="Mattermost 3.8.1" \
       io.openshift.expose-services="8065/tcp:mattermost" \
       io.openshift.non-scalable="true" \
       io.openshift.tags="mattermost,slack" \
@@ -21,7 +21,7 @@ RUN set -x && \
   yum -y install jq nc tar && \
   yum clean all
 
-ENV MATTERMOST_VERSION 3.7.3
+ENV MATTERMOST_VERSION 3.8.1
 
 RUN set -x && \
   curl -sLO https://releases.mattermost.com/${MATTERMOST_VERSION}/mattermost-team-${MATTERMOST_VERSION}-linux-amd64.tar.gz && \
