@@ -1,7 +1,7 @@
 #!/bin/bash
 MM_HOME=/opt/mattermost
 MM_CONFIG=${MM_HOME}/config/config.json
-MM_CONFIG_ORIG=${MM_HOME}/config.json
+MM_CONFIG_ORIG=${MM_HOME}/orig.config.json
 
 function updatejson() {
   set -o nounset
