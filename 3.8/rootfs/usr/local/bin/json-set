@@ -1,0 +1,83 @@
+#!/usr/bin/env python
+
+from __future__ import print_function
+from collections import OrderedDict
+
+import argparse
+import json
+import sys
+
+import dpath
+
+
+def isInt(v):
+    try:
+        int(v)
+        return True
+    except ValueError:
+        return False
+
+
+def isFloat(v):
+    try:
+        float(v)
+        return True
+    except ValueError:
+        return False
+
+
+def isBool(v):
+    if v.upper() in ['TRUE', 'FALSE']:
+        return True
+    return False
+
+
+def toBool(v):
+    if v.upper() == 'TRUE':
+        return True
+    elif v.upper() == 'FALSE':
+        return False
+    else:
+        raise ValueError('Not a boolean')
+
+
+def main():
+    parser = argparse.ArgumentParser(description='Update JSON file')
+    parser.add_argument('file', help='config file')
+    parser.add_argument('path', help='json key path')
+    parser.add_argument('value', help='json value')
+    args = parser.parse_args()
+
+    # read json file
+    with open(args.file, "r") as configFile:
+        config = json.load(configFile, object_pairs_hook=OrderedDict)
+
+    # set value to the proper type
+    value = args.value
+    if isInt(args.value):
+        # value is set as an integer
+        value = int(args.value)
+    elif isFloat(args.value):
+        # value is set as a float
+        value = float(args.value)
+    elif isBool(args.value):
+        # value is set as a boolean
+        value = toBool(args.value)
+
+    # set value in config dict
+    ret = dpath.util.set(config, args.path, value, separator=".")
+
+    # write back to json file
+    with open(args.file, "w") as configFile:
+        json.dump(config, configFile, indent=4, separators=(',', ': '))
+
+    # if values were changed, exit 0,
+    # otherwise if no values were changed (not found?) exit 1
+    if ret > 0:
+        sys.exit(0)
+    else:
+        sys.exit(1)
+
+
+if __name__ == '__main__':
+    main()
